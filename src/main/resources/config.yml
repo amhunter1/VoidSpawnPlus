@@ -1,0 +1,49 @@
+# VoidSpawn Configuration
+# Color codes: &0-&9, &a-&f, &l (bold), &m (strikethrough), &n (underline), &o (italic), &r (reset)
+
+# Enable fade effect (screen darkening/brightening during teleport)
+fade-effect-enabled: true
+
+# Sound to play on teleport (set to 'none' to disable)
+# Valid sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+teleport-sound: ENTITY_ENDERMAN_TELEPORT
+
+# Sound volume (0.0 - 1.0)
+sound-volume: 1.0
+
+# Sound pitch (0.5 - 2.0)
+sound-pitch: 1.0
+
+# Cooldown in seconds to prevent spam (0 to disable)
+teleport-cooldown: 3
+
+# Message sent when player is teleported
+teleport-message: '&6[VoidSpawn] &eYou have been teleported to safety!'
+
+# Message sent when spawn is not set for a world
+spawn-not-set-message: '&6[VoidSpawn] &cWarning: Custom spawn not set for this world! Using default spawn.'
+
+# Message sent when spawn is set successfully
+spawn-set-message: '&6[VoidSpawn] &aSpawn location set successfully for world &e{world}&a!'
+
+# Message sent when player is on cooldown
+cooldown-message: '&6[VoidSpawn] &cPlease wait before teleporting again!'
+
+# Message sent when config is reloaded
+reload-message: '&6[VoidSpawn] &aConfiguration reloaded successfully!'
+
+# World-specific void settings
+# Format:
+#   world_name:
+#     y-level: <number>
+#     enabled: <true/false>
+worlds:
+  world:
+    y-level: -64
+    enabled: true
+  world_nether:
+    y-level: 0
+    enabled: true
+  world_the_end:
+    y-level: -64
+    enabled: true

@@ -1,0 +1,21 @@
+name: VoidSpawn
+version: '${project.version}'
+main: com.voidspawn.VoidSpawn
+api-version: '1.20'
+description: Optimized void spawn teleport plugin
+author: amhunter1 (melüt) Lora Yazilim
+
+commands:
+  vs:
+    description: VoidSpawn main command
+    usage: /<command> [setspawn|reload]
+    permission: voidspawn.admin
+    aliases: [voidspawn]
+
+permissions:
+  voidspawn.admin:
+    description: Allows access to admin commands
+    default: op
+  voidspawn.bypass:
+    description: Bypass void teleportation
+    default: false
