@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
 public class SpawnManager {
@@ -20,7 +20,7 @@ public class SpawnManager {
     public SpawnManager(VoidSpawn plugin) {
         this.plugin = plugin;
         this.spawnFile = new File(plugin.getDataFolder(), "spawns.yml");
-        this.spawnLocations = new HashMap<>();
+        this.spawnLocations = new ConcurrentHashMap<>();
     }
     
     public void loadSpawns() {

@@ -1,9 +1,10 @@
-name: VoidSpawn
+name: VoidSpawnPlus
 version: '${project.version}'
 main: com.voidspawn.VoidSpawn
 api-version: '1.20'
+folia-supported: true
 description: Optimized void spawn teleport plugin
-author: amhunter1 (melüt) Lora Yazilim
+author: amhunter1 (melüt) Lora Technologies
 
 commands:
   vs:

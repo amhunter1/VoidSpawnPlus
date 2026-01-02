@@ -4,6 +4,10 @@
 # Enable fade effect (screen darkening/brightening during teleport)
 fade-effect-enabled: true
 
+# Prevent fall damage after teleportation
+# If true, players won't take fall damage when teleported from the void
+prevent-fall-damage: true
+
 # Sound to play on teleport (set to 'none' to disable)
 # Valid sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 teleport-sound: ENTITY_ENDERMAN_TELEPORT

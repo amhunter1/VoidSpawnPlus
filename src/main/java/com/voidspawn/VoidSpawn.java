@@ -1,6 +1,7 @@
 package com.voidspawn;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bstats.bukkit.Metrics;
 import java.util.logging.Level;
 
 public class VoidSpawn extends JavaPlugin {
@@ -19,6 +20,9 @@ public class VoidSpawn extends JavaPlugin {
         configManager.loadConfig();
         
         spawnManager.loadSpawns();
+
+        int pluginId = 28656;
+        new Metrics(this, pluginId);
         
         CommandHandler commandHandler = new CommandHandler(this);
         getCommand("vs").setExecutor(commandHandler);

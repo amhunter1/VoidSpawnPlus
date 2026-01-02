@@ -15,6 +15,7 @@ public class ConfigManager {
     private FileConfiguration config;
     
     private boolean fadeEffectEnabled;
+    private boolean preventFallDamage;
     private Sound teleportSound;
     private float soundVolume;
     private float soundPitch;
@@ -37,6 +38,7 @@ public class ConfigManager {
         config = plugin.getConfig();
         
         fadeEffectEnabled = config.getBoolean("fade-effect-enabled", true);
+        preventFallDamage = config.getBoolean("prevent-fall-damage", true);
         
         String soundName = config.getString("teleport-sound", "ENTITY_ENDERMAN_TELEPORT");
         try {
@@ -76,6 +78,10 @@ public class ConfigManager {
     
     public boolean isFadeEffectEnabled() {
         return fadeEffectEnabled;
+    }
+
+    public boolean isPreventFallDamage() {
+        return preventFallDamage;
     }
     
     public Sound getTeleportSound() {

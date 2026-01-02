@@ -7,9 +7,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -23,8 +23,8 @@ public class VoidListener implements Listener {
     
     public VoidListener(VoidSpawn plugin) {
         this.plugin = plugin;
-        this.cooldowns = new HashMap<>();
-        this.lastYPositions = new HashMap<>();
+        this.cooldowns = new ConcurrentHashMap<>();
+        this.lastYPositions = new ConcurrentHashMap<>();
     }
     
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -94,45 +94,48 @@ public class VoidListener implements Listener {
     
     private void applyFadeEffect(Player player, Location destination, boolean customSpawnSet) {
         player.sendTitle("", "", 10, 40, 10);
-        
-        new BukkitRunnable() {
-            int ticks = 0;
-            
-            @Override
-            public void run() {
-                if (!player.isOnline()) {
-                    cancel();
-                    return;
-                }
-                
-                ticks++;
-                
-                if (ticks == 1) {
-                    player.sendTitle(" ", " ", 0, 40, 0);
-                } else if (ticks == 20) {
-                    performTeleport(player, destination, customSpawnSet);
-                } else if (ticks == 40) {
-                    player.sendTitle("", "", 0, 0, 10);
-                    cancel();
-                }
+
+        AtomicInteger ticks = new AtomicInteger(0);
+
+        player.getScheduler().runAtFixedRate(plugin, (task) -> {
+            if (!player.isOnline()) {
+                task.cancel();
+                return;
             }
-        }.runTaskTimer(plugin, 0L, 1L);
+
+            int currentTick = ticks.incrementAndGet();
+
+            if (currentTick == 1) {
+                player.sendTitle(" ", " ", 0, 40, 0);
+            } else if (currentTick == 20) {
+                performTeleport(player, destination, customSpawnSet);
+            } else if (currentTick == 40) {
+                player.sendTitle("", "", 0, 0, 10);
+                task.cancel();
+            }
+        }, null, 1L, 1L);
     }
     
     private void performTeleport(Player player, Location destination, boolean customSpawnSet) {
-        player.teleport(destination);
-        
-        player.sendMessage(plugin.getConfigManager().getTeleportMessage());
-        
-        Sound sound = plugin.getConfigManager().getTeleportSound();
-        if (sound != null) {
-            player.playSound(
-                player.getLocation(),
-                sound,
-                plugin.getConfigManager().getSoundVolume(),
-                plugin.getConfigManager().getSoundPitch()
-            );
-        }
+        player.teleportAsync(destination).thenAccept(success -> {
+            if (success) {
+                if (plugin.getConfigManager().isPreventFallDamage()) {
+                    player.setFallDistance(0);
+                }
+
+                player.sendMessage(plugin.getConfigManager().getTeleportMessage());
+
+                Sound sound = plugin.getConfigManager().getTeleportSound();
+                if (sound != null) {
+                    player.playSound(
+                            player.getLocation(),
+                            sound,
+                            plugin.getConfigManager().getSoundVolume(),
+                            plugin.getConfigManager().getSoundPitch()
+                    );
+                }
+            }
+        });
     }
     
     public void cleanup(UUID playerId) {
